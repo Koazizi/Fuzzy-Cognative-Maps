@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Delivery-Access to services", "label": "Delivery-Access to\nservices", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Drainage infrastructure condition", "label": "Drainage\ninfrastructure\ncondition", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Housing infrastructure condition", "label": "Housing\ninfrastructure\ncondition", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Transportation infrastructure condition", "label": "Transportation\ninfrastructure\ncondition", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Communication among orgs", "label": "Communication among\norgs", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Communicating systems failure", "label": "Communicating\nsystems failure", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Community trust", "label": "Community trust", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Housing", "label": "Housing", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Human capital", "label": "Human capital", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Insurance costs", "label": "Insurance costs", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Population loss/(related to income)", "label": "Population\nloss/(related to\nincome)", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Population loss/(related to location)", "label": "Population\nloss/(related to\nlocation)", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Elevation-Location", "label": "Elevation-Location", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Direct costs of flooding", "label": "Direct costs of\nflooding", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Flooding reputation/inhibiting development", "label": "Flooding reputation/\ninhibiting\ndevelopment", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Impact to businesses", "label": "Impact to businesses", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Access to health services", "label": "Access to health\nservices", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Mental-emotional health", "label": "Mental-emotional\nhealth", "shape": "box", "size": 15}, {"color": "lightgreen", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Issue/Water quality", "label": "Water quality", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Magnitude of rainfall and duration", "label": "Magnitude of\nrainfall and\nduration", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Precipitation", "label": "Precipitation", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Specific storms", "label": "Specific storms", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Communicating upstream-downstream", "label": "Communicating\nupstream-downstream", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Race", "label": "Race", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Socioeconomic status", "label": "Socioeconomic status", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Drainage maintenance", "label": "Drainage maintenance", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Drainage age", "label": "Drainage age", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Drainage infrastructure condition", "label": "Drainage\ninfrastructure\ncondition", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Housing infrastructure condition", "label": "Housing\ninfrastructure\ncondition", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Transportation infrastructure condition", "label": "Transportation\ninfrastructure\ncondition", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Natural Infrastructure condition", "label": "Natural\nInfrastructure\ncondition", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Drainage infrastructure failure", "label": "Drainage\ninfrastructure\nfailure", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Infrastructure location", "label": "Infrastructure\nlocation", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Elevation-Location", "label": "Elevation-Location", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Population", "label": "Population", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Location of drainage-flow of water", "label": "Location of\ndrainage-flow of\nwater", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Proximity to water", "label": "Proximity to water", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Funding", "label": "Funding", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Debris and tires", "label": "Debris and tires", "shape": "box", "size": 15}, {"color": "orange", "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Driver/Lack of accountability/(maintenance \u0026 not enforcing regulations)", "label": "Lack of accountabili\nty/(maintenance \u0026\nnot enforcing\nregulations)", "shape": "box", "size": 15}, {"color": "red", "fixed": true, "font": {"color": "black", "face": "sans-serif", "size": 22}, "id": "Flood Vulnerability", "label": "Flood Vulnerability", "shape": "box", "size": 15, "x": 0, "y": 0}, {"color": "orange", "fixed": true, "font": {"color": "black", "face": "Arial", "size": 20}, "id": "Legend_Driver", "label": "Driver", "shape": "box", "x": 600, "y": -600}, {"color": "lightgreen", "fixed": true, "font": {"color": "black", "face": "Arial", "size": 20}, "id": "Legend_Issue", "label": "Issue", "shape": "box", "x": 600, "y": -650}, {"color": "red", "fixed": true, "font": {"color": "black", "face": "Arial", "size": 20}, "id": "Legend_Flood_Vulnerability", "label": "Flood Vulnerability", "shape": "box", "x": 600, "y": -700}, {"color": "#97c2fc", "fixed": true, "font": {"bold": true, "color": "black", "face": "Arial", "size": 25}, "id": "Legend_Title", "label": "Legend", "shape": "text", "x": 600, "y": -750}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "Driver/Communicating upstream-downstream", "to": "Flood Vulnerability", "value": 1}, {"arrows": "to", "from": "Driver/Debris and tires", "to": "Driver/Funding", "value": 1}, {"arrows": "to", "from": "Driver/Debris and tires", "to": "Driver/Lack of accountability/(maintenance \u0026 not enforcing regulations)", "value": 1}, {"arrows": "to", "from": "Driver/Debris and tires", "to": "Flood Vulnerability", "value": 1}, {"arrows": "to", "from": "Driver/Drainage age", "to": "Flood Vulnerability", "value": 3}, {"arrows": "to", "from": "Driver/Drainage infrastructure condition", "to": "Flood Vulnerability", "value": 3}, {"arrows": "to", "from": "Driver/Drainage infrastructure condition", "to": "Issue/Drainage infrastructure condition", "value": 1}, {"arrows": "to", "from": "Driver/Drainage infrastructure failure", "to": "Flood Vulnerability", "value": 2}, {"arrows": "to", "from": "Driver/Drainage maintenance", "to": "Driver/Funding", "value": 1}, {"arrows": "to", "from": "Driver/Drainage maintenance", "to": "Flood Vulnerability", "value": 3}, {"arrows": "to", "from": "Driver/Elevation-Location", "to": "Flood Vulnerability", "value": 4}, {"arrows": "to", "from": "Driver/Elevation-Location", "to": "Issue/Elevation-Location", "value": 2}, {"arrows": "to", "from": "Driver/Funding", "to": "Flood Vulnerability", "value": 1}, {"arrows": "to", "from": "Driver/Housing infrastructure condition", "to": "Flood Vulnerability", "value": 3}, {"arrows": "to", "from": "Driver/Housing infrastructure condition", "to": "Issue/Housing", "value": 2}, {"arrows": "to", "from": "Driver/Housing infrastructure condition", "to": "Issue/Housing infrastructure condition", "value": 1}, {"arrows": "to", "from": "Driver/Housing infrastructure condition", "to": "Issue/Insurance costs", "value": 2}, {"arrows": "to", "from": "Driver/Housing infrastructure condition", "to": "Issue/Mental-emotional health", "value": 2}, {"arrows": "to", "from": "Driver/Infrastructure location", "to": "Flood Vulnerability", "value": 1}, {"arrows": "to", "from": "Driver/Lack of accountability/(maintenance \u0026 not enforcing regulations)", "to": "Flood Vulnerability", "value": 1}, {"arrows": "to", "from": "Driver/Location of drainage-flow of water", "to": "Flood Vulnerability", "value": 4}, {"arrows": "to", "from": "Driver/Magnitude of rainfall and duration", "to": "Flood Vulnerability", "value": 5}, {"arrows": "to", "from": "Driver/Natural Infrastructure condition", "to": "Flood Vulnerability", "value": 1}, {"arrows": "to", "from": "Driver/Population", "to": "Flood Vulnerability", "value": 3}, {"arrows": "to", "from": "Driver/Population", "to": "Issue/Population loss/(related to income)", "value": 1}, {"arrows": "to", "from": "Driver/Population", "to": "Issue/Population loss/(related to location)", "value": 2}, {"arrows": "to", "from": "Driver/Precipitation", "to": "Flood Vulnerability", "value": 4}, {"arrows": "to", "from": "Driver/Proximity to water", "to": "Flood Vulnerability", "value": 5}, {"arrows": "to", "from": "Driver/Race", "to": "Flood Vulnerability", "value": 1}, {"arrows": "to", "from": "Driver/Race", "to": "Issue/Housing", "value": 1}, {"arrows": "to", "from": "Driver/Socioeconomic status", "to": "Flood Vulnerability", "value": 2}, {"arrows": "to", "from": "Driver/Socioeconomic status", "to": "Issue/Housing", "value": 2}, {"arrows": "to", "from": "Driver/Socioeconomic status", "to": "Issue/Housing infrastructure condition", "value": 1}, {"arrows": "to", "from": "Driver/Specific storms", "to": "Flood Vulnerability", "value": 2}, {"arrows": "to", "from": "Driver/Transportation infrastructure condition", "to": "Flood Vulnerability", "value": 1}, {"arrows": "to", "from": "Driver/Transportation infrastructure condition", "to": "Issue/Access to health services", "value": 2}, {"arrows": "to", "from": "Driver/Transportation infrastructure condition", "to": "Issue/Delivery-Access to services", "value": 2}, {"arrows": "to", "from": "Driver/Transportation infrastructure condition", "to": "Issue/Transportation infrastructure condition", "value": 1}, {"arrows": "to", "from": "Flood Vulnerability", "to": "Issue/Communicating systems failure", "value": 1}, {"arrows": "to", "from": "Flood Vulnerability", "to": "Issue/Communication among orgs", "value": 1}, {"arrows": "to", "from": "Flood Vulnerability", "to": "Issue/Community trust", "value": 1}, {"arrows": "to", "from": "Flood Vulnerability", "to": "Issue/Direct costs of flooding", "value": 2}, {"arrows": "to", "from": "Flood Vulnerability", "to": "Issue/Flooding reputation/inhibiting development", "value": 1}, {"arrows": "to", "from": "Flood Vulnerability", "to": "Issue/Impact to businesses", "value": 1}, {"arrows": "to", "from": "Flood Vulnerability", "to": "Issue/Water quality", "value": 1}, {"arrows": "to", "from": "Issue/Housing", "to": "Issue/Human capital", "value": 1}, {"arrows": "to", "from": "Issue/Housing", "to": "Issue/Mental-emotional health", "value": 2}, {"arrows": "to", "from": "Issue/Human capital", "to": "Issue/Housing", "value": 4}, {"arrows": "to", "from": "Issue/Population loss/(related to location)", "to": "Issue/Human capital", "value": 2}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"borderWidth": 2, "color": {"highlight": {"border": "black", "background": "black"}}, "font": {"color": "black", "size": 20, "face": "TimesNewRoman"}}, "edges": {"color": {"color": "#7f7f7f", "highlight": "#7f7f7f", "inherit": false, "opacity": 0.6}, "width": 2, "smooth": {"type": "continuous"}}, "physics": {"forceAtlas2Based": {"gravitationalConstant": -1000, "centralGravity": 0.05, "springLength": 30, "springConstant": 0.2, "damping": 0.15}, "maxVelocity": 50, "solver": "forceAtlas2Based", "timestep": 0.35, "stabilization": {"enabled": true, "iterations": 2000, "updateInterval": 25}}, "interaction": {"hideEdgesOnDrag": true}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
